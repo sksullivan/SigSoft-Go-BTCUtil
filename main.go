@@ -11,18 +11,26 @@ package main
 
 // Import libraries
 import (
-	"fmt" // Used to print & format strings
-	"os" // Gets command line arguments
-	"net/http" // Makes HTTP requests
-	"io/ioutil" // Parses HTTP response
 	"encoding/json" // Parses HTTP response as JSON data
+	"fmt"           // Used to print & format strings
+	"io/ioutil"     // Parses HTTP response
+	"net/http"      // Makes HTTP requests
+	"os"            // Gets command line arguments
 )
 
+var usage = `Usage: go run main.go <symbol> <symbol> ...
+Ex:    go run main.go USD EUR GBP`
 
 // Main functions
 func main() {
 	// Get command line args without the program name
 	args_without_exe_name := os.Args[1:]
+
+	if len(args_without_exe_name) == 0 {
+		fmt.Println(usage)
+		fmt.Println("No Symbols Specified")
+		return
+	}
 
 	var currency_symbols = args_without_exe_name
 	var urls []string
@@ -35,10 +43,10 @@ func main() {
 
 	// For each URL, make request to Coindesk
 	for index, url := range urls {
-		res, _ := http.Get(url) // Make GET request (ignoring errors)
-		body, _ := ioutil.ReadAll(res.Body) // Read response (ignoring errors)
+		res, _ := http.Get(url)              // Make GET request (ignoring errors)
+		body, _ := ioutil.ReadAll(res.Body)  // Read response (ignoring errors)
 		var json_data map[string]interface{} // Set up variable to hold JSON data
-		json.Unmarshal(body, &json_data) // Parse response into JSON data
+		json.Unmarshal(body, &json_data)     // Parse response into JSON data
 
 		// Get current currency symbol, get array of currency info from json data
 		currency_symbol := currency_symbols[index]
