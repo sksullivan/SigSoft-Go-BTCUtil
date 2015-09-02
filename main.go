@@ -15,7 +15,7 @@ import (
 	"os" // Gets command line arguments
 	"net/http" // Makes HTTP requests
 	"io/ioutil" // Parses HTTP response
-    "encoding/json" // Parses HTTP response as JSON data
+	"encoding/json" // Parses HTTP response as JSON data
 )
 
 
@@ -38,14 +38,14 @@ func main() {
 		res, _ := http.Get(url) // Make GET request (ignoring errors)
 		body, _ := ioutil.ReadAll(res.Body) // Read response (ignoring errors)
 		var json_data map[string]interface{} // Set up variable to hold JSON data
-    	json.Unmarshal(body, &json_data) // Parse response into JSON data
+		json.Unmarshal(body, &json_data) // Parse response into JSON data
 
-    	// Get current currency symbol, get array of currency info from json data
-    	currency_symbol := currency_symbols[index]
-    	currency_info_array, ok := json_data["bpi"].(map[string]interface{})
+		// Get current currency symbol, get array of currency info from json data
+		currency_symbol := currency_symbols[index]
+		currency_info_array, ok := json_data["bpi"].(map[string]interface{})
 
-    	// If the data didn't exist, we must have an invalid currency symbol
-    	if !ok {
+		// If the data didn't exist, we must have an invalid currency symbol
+		if !ok {
 			fmt.Printf("%s: invalid\n", currency_symbol)
 			continue
 		}
